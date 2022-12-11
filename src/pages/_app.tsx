@@ -1,19 +1,32 @@
-import { type AppType } from "next/app";
-import { type Session } from "next-auth";
-import { SessionProvider } from "next-auth/react";
+import { type AppType } from 'next/app';
+import { type Session } from 'next-auth';
+import { SessionProvider } from 'next-auth/react';
+import { Jost } from '@next/font/google';
 
-import { trpc } from "../utils/trpc";
+import { trpc } from '../utils/trpc';
 
-import "../styles/globals.css";
+import '../styles/globals.css';
+
+const jost = Jost({
+  subsets: ['latin'],
+  variable: '--font-jost',
+});
 
 const MyApp: AppType<{ session: Session | null }> = ({
   Component,
   pageProps: { session, ...pageProps },
 }) => {
   return (
-    <SessionProvider session={session}>
-      <Component {...pageProps} />
-    </SessionProvider>
+    <>
+      <style jsx global>{`
+        html {
+          font-family: ${jost.style.fontFamily};
+        }
+      `}</style>
+      <SessionProvider session={session}>
+        <Component {...pageProps} />
+      </SessionProvider>
+    </>
   );
 };
 
