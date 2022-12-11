@@ -3,6 +3,7 @@ module.exports = {
   content: ['./src/**/*.{js,ts,jsx,tsx}'],
   theme: {
     colors: {
+      white: '#fff',
       purple: '#ad1fea',
       'light-blue': '#62bcfa',
       blue: '#4661e6',
@@ -67,5 +68,5 @@ module.exports = {
     },
     extend: {},
   },
-  plugins: [],
+  plugins: [require('@tailwindcss/container-queries')],
 };

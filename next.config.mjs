@@ -13,5 +13,29 @@ const config = {
     locales: ['en'],
     defaultLocale: 'en',
   },
+  webpack: (config) => {
+    config.module.rules.push({
+      test: /\.svg$/i,
+      type: 'asset',
+      resourceQuery: /url/, // *.svg?url
+    });
+
+    config.module.rules.push({
+      test: /\.svg$/i,
+      issuer: /\.[jt]sx?$/,
+      resourceQuery: { not: [/url/] }, // exclude react component if *.svg?url
+      use: [
+        {
+          loader: '@svgr/webpack',
+          options: {
+            typescript: true,
+            ext: 'tsx',
+          },
+        },
+      ],
+    });
+
+    return config;
+  },
 };
 export default config;

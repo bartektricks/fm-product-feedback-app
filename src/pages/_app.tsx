@@ -6,6 +6,7 @@ import { Jost } from '@next/font/google';
 import { trpc } from '../utils/trpc';
 
 import '../styles/globals.css';
+import Head from 'next/head';
 
 const jost = Jost({
   subsets: ['latin'],
@@ -18,6 +19,10 @@ const MyApp: AppType<{ session: Session | null }> = ({
 }) => {
   return (
     <>
+      <Head>
+        <title>Homepage</title>
+        <link rel="icon" href="/favicon.ico" />
+      </Head>
       <style jsx global>{`
         html {
           font-family: ${jost.style.fontFamily};

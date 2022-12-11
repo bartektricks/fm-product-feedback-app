@@ -1,5 +1,15 @@
 {
   "compilerOptions": {
+    "baseUrl": "./src",
+    "paths": {
+      "@server/*": ["server/*"],
+      "@env/*": ["env/*"],
+      "@types/*": ["types/*"],
+      "@utils/*": ["utils/*"],
+      "@components/*": ["components/*"],
+      "@atoms/*": ["atoms/*"],
+      "@assets/*": ["assets/*"]
+    },
     "target": "es2017",
     "lib": ["dom", "dom.iterable", "esnext"],
     "allowJs": true,
