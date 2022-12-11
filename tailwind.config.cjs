@@ -5,13 +5,14 @@ module.exports = {
     colors: {
       white: '#fff',
       purple: '#ad1fea',
-      'light-blue': '#62bcfa',
+      'ocean-blue': '#62bcfa',
+      'light-blue': '#cfd7ff',
       blue: '#4661e6',
       orange: '#f49f85',
       'very-light-grey': '#f7f8fd',
       'light-grey': '#f2f4ff',
       grey: '#647196',
-      'dark-grey': '#4661e6',
+      'dark-grey': '#373f68',
       'darkest-grey': '#3a4374',
     },
     fontSize: {
