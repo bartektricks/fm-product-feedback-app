@@ -4,14 +4,13 @@ import { trpc } from '../utils/trpc';
 import BoardName from '@atoms/BoardName';
 import CategortiesBox from '@atoms/CategoriesBox';
 import Roadmap from '@atoms/Roadmap';
-import Button from '@atoms/Button';
+import UserBox from '@components/UserBox';
 
 const Home: NextPage = () => {
   const hello = trpc.example.hello.useQuery({ text: 'from tRPC' });
-
   return (
     <>
-      <div className="grid grid-cols-3 grid-rows-1 gap-4 bg-purple p-6">
+      <div className="grid grid-cols-3 grid-rows-2 gap-4 bg-purple p-6">
         <BoardName name="Frontend Mentor" />
         <CategortiesBox
           categories={[
@@ -31,10 +30,8 @@ const Home: NextPage = () => {
           ]}
         />
         <main>{hello.data?.greeting}</main>
+        <UserBox />
       </div>
-      <Button color="blue" href="/">
-        + Test
-      </Button>
     </>
   );
 };
