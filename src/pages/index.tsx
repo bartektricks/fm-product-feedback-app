@@ -1,26 +1,22 @@
 import { type NextPage } from 'next';
 
-import { trpc } from '../utils/trpc';
+import { trpc } from '@utils/trpc';
 import BoardName from '@atoms/BoardName';
-import CategortiesBox from '@atoms/CategoriesBox';
 import Roadmap from '@atoms/Roadmap';
 import UserBox from '@components/UserBox';
+import ScorePill from '@atoms/ScorePill';
+import Post from '@components/Post';
 
 const Home: NextPage = () => {
-  const hello = trpc.example.hello.useQuery({ text: 'from tRPC' });
+  const { data: posts, isFetching } = trpc.post.getPosts.useQuery();
+
   return (
     <>
       <div className="grid grid-cols-3 grid-rows-2 gap-4 bg-purple p-6">
         <BoardName name="Frontend Mentor" />
-        <CategortiesBox
-          categories={[
-            { name: 'All', href: 'all' },
-            { name: 'UI' },
-            { name: 'UX' },
-            { name: 'Enhancement' },
-            { name: 'Bug' },
-          ]}
-        />
+        <div>
+          <ScorePill score="5" />
+        </div>
         <Roadmap
           roadmapLink="/"
           status={[
@@ -29,8 +25,23 @@ const Home: NextPage = () => {
             { name: 'Live', count: 0, color: 'bg-ocean-blue' },
           ]}
         />
-        <main>{hello.data?.greeting}</main>
         <UserBox />
+        {isFetching && 'FETCHING'}
+      </div>
+      <div className="flex max-w-sm flex-col gap-6 p-6 @container">
+        {posts?.map((post) => {
+          return (
+            <Post
+              key={post.id}
+              {...post}
+              category={{
+                name: post.category.name,
+                href: `/category/${post.category.slug}`,
+              }}
+              commentCount={0}
+            />
+          );
+        })}
       </div>
     </>
   );

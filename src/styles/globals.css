@@ -4,6 +4,6 @@
 
 @layer base {
   body {
-    @apply text-grey text-body1;
+    @apply text-grey text-body1 bg-very-light-grey @container;
   }
 }

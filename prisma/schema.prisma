@@ -21,16 +21,33 @@ model Example {
 }
 
 model Post {
-  id        String   @id @default(cuid())
-  createdAt DateTime @default(now())
-  udpatedAt DateTime @updatedAt
-  title     String
-  body      String
-  status    String
-  category  String
-  score     Int
-  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
-  userId    String
+  id         String   @id @default(cuid())
+  createdAt  DateTime @default(now())
+  udpatedAt  DateTime @updatedAt
+  slug       String   @unique
+  title      String
+  body       String
+  score      Int
+  user       User     @relation(fields: [userId], references: [id])
+  userId     String
+  category   Category @relation(fields: [categoryId], references: [id])
+  categoryId String
+  status     Status   @relation(fields: [statusId], references: [id])
+  statusId   String
+}
+
+model Category {
+  id   String @id @default(cuid())
+  name String
+  slug String
+  post Post[]
+}
+
+model Status {
+  id   String @id @default(cuid())
+  name String
+  slug String
+  post Post[]
 }
 
 // Necessary for Next auth
