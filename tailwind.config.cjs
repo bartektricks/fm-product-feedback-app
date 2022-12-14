@@ -22,7 +22,7 @@ module.exports = {
       return {
         center: true,
         screens: {
-          md: `768px`,
+          md: `calc(768px + (${theme('spacing.gutter')} * 2))`,
           xl: `calc(1110px + (${theme('spacing.gutter')} * 2))`,
         },
         padding: {
