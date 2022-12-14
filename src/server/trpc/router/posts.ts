@@ -58,6 +58,7 @@ export const postsRouter = router({
           id: true,
           title: true,
           body: true,
+          slug: true,
           category: {
             select: {
               name: true,

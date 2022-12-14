@@ -4,7 +4,7 @@ import Image from 'next/image';
 
 export default function UserBox() {
   const { data } = useSession();
-  console.log(data);
+
   return (
     <div className="flex flex-col content-start items-start gap-4 rounded-xl bg-white p-6">
       {data?.user && (
@@ -20,7 +20,7 @@ export default function UserBox() {
           )}
           <div className="text-dark-grey">
             <h3 className="text-display2">{data.user.name || 'Github user'}</h3>
-            <span className="body1">@{data.user.login}</span>
+            <span className="text-body3">@{data.user.login}</span>
           </div>
         </div>
       )}

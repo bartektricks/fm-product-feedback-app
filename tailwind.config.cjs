@@ -1,8 +1,11 @@
+const defaultTheme = require('tailwindcss/defaultTheme');
+
 /** @type {import('tailwindcss').Config} */
 module.exports = {
   content: ['./src/**/*.{js,ts,jsx,tsx}'],
   theme: {
     colors: {
+      black: '#000',
       white: '#fff',
       purple: '#ad1fea',
       'ocean-blue': '#62bcfa',
@@ -14,6 +17,18 @@ module.exports = {
       grey: '#647196',
       'dark-grey': '#373f68',
       'darkest-grey': '#3a4374',
+    },
+    container: ({ theme }) => {
+      return {
+        center: true,
+        screens: {
+          md: `768px`,
+          xl: `calc(1110px + (${theme('spacing.gutter')} * 2))`,
+        },
+        padding: {
+          DEFAULT: theme('spacing.gutter'),
+        },
+      };
     },
     fontSize: {
       display1: [
@@ -67,7 +82,11 @@ module.exports = {
         },
       ],
     },
-    extend: {},
+    extend: {
+      spacing: {
+        gutter: defaultTheme.spacing[6],
+      },
+    },
   },
   plugins: [require('@tailwindcss/container-queries')],
 };

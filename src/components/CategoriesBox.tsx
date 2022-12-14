@@ -1,7 +1,7 @@
 import type { PillProps } from '@atoms/Pill';
 import Pill from '@atoms/Pill';
 
-type Category = PillProps & { id: string };
+type Category = PillProps & { id: string | number };
 
 type CategoriesBoxProps = {
   categories: Category[];
