@@ -3,6 +3,7 @@ import { trpc } from '@utils/trpc';
 
 import PostsWrapper from '@components/PostsWrapper';
 import HomeHeader from '@components/HomeHeader';
+import FeedbackBar from '@components/FeedbackBar';
 
 const Home: NextPage = () => {
   const { data: posts, isFetching } = trpc.post.getPosts.useQuery();
@@ -14,8 +15,7 @@ const Home: NextPage = () => {
           <HomeHeader />
         </div>
         <div className="-mx-gutter basis-full md:mx-0">
-          <div className="bg-darkest-grey p-6">BELKA</div>
-
+          <FeedbackBar />
           <PostsWrapper posts={posts} />
         </div>
       </div>
