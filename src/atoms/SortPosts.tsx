@@ -3,7 +3,7 @@ import { motion } from 'framer-motion';
 import ArrowUp from '@assets/shared/icon-arrow-up.svg';
 import ArrowDown from '@assets/shared/icon-arrow-down.svg';
 import Tick from '@assets/shared/icon-check.svg';
-import useClickOutside from 'hooks/useClickOutside';
+import useClickOutside from '@hooks/useClickOutside';
 
 export const SORT_TYPES = [
   { value: 'MOST_UPVOTES', name: 'Most Upvotes' },

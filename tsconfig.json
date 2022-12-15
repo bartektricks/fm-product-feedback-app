@@ -8,7 +8,8 @@
       "@utils/*": ["utils/*"],
       "@components/*": ["components/*"],
       "@atoms/*": ["atoms/*"],
-      "@assets/*": ["assets/*"]
+      "@assets/*": ["assets/*"],
+      "@hooks/*": ["hooks/*"]
     },
     "target": "es2017",
     "lib": ["dom", "dom.iterable", "esnext"],
