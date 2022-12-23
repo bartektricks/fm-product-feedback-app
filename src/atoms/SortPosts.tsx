@@ -33,6 +33,11 @@ const DROPDOWN_VARIANTS = {
 };
 
 export default function SortPosts() {
+  const [isOpen, setIsOpen] = useState(false);
+  const [selected, setSelected] = useState<typeof SORT_TYPES[number]>(
+    SORT_TYPES[0],
+  );
+
   const buttonRef = useRef<HTMLButtonElement>(null);
   const dropdownRef = useClickOutside<HTMLUListElement>((e) => {
     if (!isOpen) return;
@@ -44,10 +49,6 @@ export default function SortPosts() {
       setIsOpen(false);
     }
   });
-  const [isOpen, setIsOpen] = useState(false);
-  const [selected, setSelected] = useState<typeof SORT_TYPES[number]>(
-    SORT_TYPES[0],
-  );
 
   const Arrow = isOpen ? ArrowUp : ArrowDown;
 
@@ -55,7 +56,7 @@ export default function SortPosts() {
     <div className="relative">
       <button
         ref={buttonRef}
-        className="flex items-center gap-2 text-display4 font-normal text-grey"
+        className="flex items-center gap-2 text-display4 font-normal text-light-grey transition-all hover:opacity-75"
         type="button"
         onClick={(e) => {
           e.preventDefault();
@@ -75,7 +76,7 @@ export default function SortPosts() {
         variants={DROPDOWN_VARIANTS}
         ref={dropdownRef}
       >
-        {SORT_TYPES.map((option) => (
+        {SORT_TYPES.map((option, index) => (
           <li
             key={option.value}
             className="border-b border-solid border-b-darkest-grey border-opacity-20 last:border-0"
@@ -89,6 +90,14 @@ export default function SortPosts() {
                 e.preventDefault();
                 setSelected(option);
                 setIsOpen(false);
+              }}
+              onFocus={() => {
+                setIsOpen(true);
+              }}
+              onBlur={() => {
+                if (index === SORT_TYPES.length - 1) {
+                  setIsOpen(false);
+                }
               }}
             >
               {option.name} {option.value === selected.value && <Tick />}

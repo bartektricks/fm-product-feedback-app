@@ -8,6 +8,7 @@ import FeedbackBar from '@components/FeedbackBar';
 const Home: NextPage = () => {
   const { data: posts, isFetching } = trpc.post.getPosts.useQuery();
 
+  //TODO Create SORT context.
   return (
     <>
       <div className="container gap-8 md:py-8 xl:flex xl:py-24">
