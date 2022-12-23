@@ -27,17 +27,7 @@ export default function PostsWrapper({ posts }: { posts?: PostType[] }) {
           </div>
         </div>
       ) : (
-        posts.map((post) => (
-          <Post
-            key={post.id}
-            {...post}
-            category={{
-              href: `/category/${post.category.slug}`,
-              name: post.category.name,
-            }}
-            commentCount={0}
-          />
-        ))
+        posts.map((post) => <Post key={post.id} {...post} commentCount={0} />)
       )}
     </div>
   );

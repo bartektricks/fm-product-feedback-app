@@ -51,6 +51,31 @@ export const postsRouter = router({
         },
       });
     }),
+  getPost: publicProcedure.input(PostSchema.pick({ slug: true })).query(
+    async ({ ctx, input }) =>
+      await ctx.prisma.post.findFirst({
+        where: {
+          slug: input.slug,
+        },
+        select: {
+          slug: true,
+          title: true,
+          body: true,
+          score: true,
+          user: {
+            select: {
+              login: true,
+            },
+          },
+          category: {
+            select: {
+              name: true,
+              slug: true,
+            },
+          },
+        },
+      }),
+  ),
   getPosts: publicProcedure.query(
     async ({ ctx }) =>
       await ctx.prisma.post.findMany({

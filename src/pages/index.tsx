@@ -16,7 +16,7 @@ const Home: NextPage = () => {
           <HomeHeader />
         </div>
         <div className="-mx-gutter basis-full md:mx-0">
-          <FeedbackBar />
+          <FeedbackBar postCount={posts?.length} />
           <PostsWrapper posts={posts} />
         </div>
       </div>

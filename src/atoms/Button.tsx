@@ -21,7 +21,7 @@ export default function Button({
   return (
     <Link
       {...rest}
-      className={`inline-flex min-h-[2.75rem] min-w-[9.75rem] items-center justify-center rounded-xl p-2 text-display4 text-light-grey ${buttonColors[color]}`}
+      className={`inline-flex items-center justify-center rounded-xl px-4 py-3 text-display4 text-light-grey md:px-6 ${buttonColors[color]}`}
     >
       {children}
     </Link>

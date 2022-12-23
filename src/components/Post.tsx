@@ -1,14 +1,14 @@
-import type { PillProps } from '@atoms/Pill';
 import Pill from '@atoms/Pill';
 import type { ScorePillProps } from '@atoms/ScorePill';
 import ScorePill from '@atoms/ScorePill';
 import CommentsIcon from '@assets/shared/icon-comments.svg';
 import Link from 'next/link';
+import type { Category } from '@prisma/client';
 
 export type PostProps = {
   title: string;
   body: string;
-  category: PillProps;
+  category: Omit<Category, 'id'>;
   commentCount: number;
   slug: string;
 } & ScorePillProps;
@@ -28,7 +28,7 @@ export default function Post({
           <Link href={`/post/${slug}`}>{title}</Link>
         </h3>
         <p className="text-grey">{body}</p>
-        <Pill {...category} />
+        <Pill href={`/category/${category.slug}`} name={category.name} />
       </div>
       <div className="col-span-1 @lg:-order-1 @lg:col-span-1">
         <ScorePill score={score} />
