@@ -69,7 +69,7 @@ export default function SortPosts() {
         <Arrow className="inline-block" />
       </button>
       <motion.ul
-        className={`absolute top-full left-0 w-screen max-w-[16rem] overflow-hidden rounded-xl bg-white shadow-md ${
+        className={`absolute top-full left-0 w-screen max-w-[16rem] overflow-hidden rounded-xl bg-white opacity-0 shadow-md ${
           isOpen ? '' : 'pointer-events-none'
         }`}
         animate={isOpen ? 'open' : 'closed'}

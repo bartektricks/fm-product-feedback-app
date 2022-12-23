@@ -14,40 +14,48 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
-model Example {
-  id        String   @id @default(cuid())
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
-}
-
 model Post {
-  id         String   @id @default(cuid())
-  createdAt  DateTime @default(now())
-  udpatedAt  DateTime @updatedAt
-  slug       String   @unique
+  id         String    @id @default(cuid())
+  createdAt  DateTime  @default(now())
+  udpatedAt  DateTime  @updatedAt
+  slug       String    @unique
   title      String
   body       String
   score      Int
-  user       User     @relation(fields: [userId], references: [id])
+  user       User      @relation(fields: [userId], references: [id])
   userId     String
   category   Category @relation(fields: [categoryId], references: [id])
   categoryId String
-  status     Status   @relation(fields: [statusId], references: [id])
+  status     Status    @relation(fields: [statusId], references: [id])
   statusId   String
+  comment    Comment?
+}
+
+model Comment {
+  id        String    @id @default(cuid())
+  createdAt DateTime  @default(now())
+  body      String
+  Children  Comment[] @relation("Comment_Children")
+  parent    Comment?  @relation("Comment_Children", fields: [parentId], references: [id])
+  parentId  String?
+  user      User      @relation(fields: [userId], references: [id])
+  userId    String    @unique
+  post      Post      @relation(fields: [postId], references: [id])
+  postId    String    @unique
 }
 
 model Category {
   id   String @id @default(cuid())
   name String
   slug String
-  post Post[]
+  posts Post[]
 }
 
 model Status {
   id   String @id @default(cuid())
   name String
   slug String
-  post Post[]
+  posts Post[]
 }
 
 // Necessary for Next auth
@@ -87,6 +95,7 @@ model User {
   accounts      Account[]
   sessions      Session[]
   posts         Post[]
+  comments      Comment[]
 }
 
 model VerificationToken {
