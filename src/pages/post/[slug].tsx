@@ -5,17 +5,18 @@ import Error from 'next/error';
 import { useSession } from 'next-auth/react';
 import Post from '@components/Post';
 import GoBack from '@atoms/GoBack';
+import PostComments from '@components/PostComments';
+import getNumberOfComments from '@utils/getNumberOfComments';
 
 export default function PostPage() {
   const { data: sessionData } = useSession();
   const router = useRouter();
   const { slug } = router.query;
+  const commentMutation = trpc.post.addComment.useMutation();
 
-  if (typeof slug !== 'string') {
-    return <Error statusCode={404} />;
-  }
+  const { data: post } = trpc.post.getPost.useQuery({ slug: String(slug) });
 
-  const { data: post } = trpc.post.getPost.useQuery({ slug: slug });
+  const commentsCount = getNumberOfComments(post?.comments);
 
   if (!post) {
     return <Error statusCode={404} />;
@@ -35,8 +36,38 @@ export default function PostPage() {
           ) : null}
         </nav>
       </header>
-      <Post {...post} commentCount={0} />
-      <div className="py-6">Implement comments</div>
+      <Post {...post} commentCount={commentsCount} />
+      {!!post.comments.length && (
+        <PostComments comments={post.comments} commentsCount={commentsCount} />
+      )}
+      <div>
+        <form>
+          <label htmlFor="">Add Comment</label>
+          <textarea
+            name=""
+            id=""
+            cols={30}
+            rows={10}
+            maxLength={250}
+          ></textarea>
+          <div>
+            <span>250 Characters left</span>
+            <Button
+              type="submit"
+              color="purple"
+              onClick={async () => {
+                commentMutation.mutate({
+                  parentId: 'clc3ctkqw00013rf8bpqjq5gd',
+                  postId: post.id,
+                  body: 'Hello world',
+                });
+              }}
+            >
+              Post Comment
+            </Button>
+          </div>
+        </form>
+      </div>
     </section>
   );
 }

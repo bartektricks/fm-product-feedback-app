@@ -1,31 +1,8 @@
-import { z } from 'zod';
-import type { Post } from '@prisma/client';
-import type { Context } from '../context';
 import { router, publicProcedure, protectedProcedure } from '../trpc';
 import getSlug from '@utils/slugify';
+import { CommentSchema, PostSchema } from '@utils/schemas';
 
 const SLUG_REGEX = /-(\d+)$/;
-
-const PostSchema = z.object({
-  title: z.string(),
-  body: z.string(),
-  userId: z.string(),
-  categoryId: z.string(),
-  statusId: z.string(),
-  score: z.number(),
-  slug: z.string(),
-});
-
-const findExistingPost = (prisma: Context['prisma'], slug: Post['slug']) => {
-  return prisma.post.findMany({
-    where: {
-      slug,
-    },
-    orderBy: {
-      slug: 'desc',
-    },
-  });
-};
 
 // TODO improve createPost.
 export const postsRouter = router({
@@ -33,7 +10,14 @@ export const postsRouter = router({
     .input(PostSchema.omit({ score: true, slug: true }))
     .mutation(async ({ ctx, input }) => {
       let slug = getSlug(input.title);
-      const [firstPost] = await findExistingPost(ctx.prisma, slug);
+      const [firstPost] = await ctx.prisma.post.findMany({
+        where: {
+          slug,
+        },
+        orderBy: {
+          slug: 'desc',
+        },
+      });
 
       if (firstPost) {
         const match = firstPost.slug.match(SLUG_REGEX);
@@ -58,6 +42,7 @@ export const postsRouter = router({
           slug: input.slug,
         },
         select: {
+          id: true,
           slug: true,
           title: true,
           body: true,
@@ -71,6 +56,38 @@ export const postsRouter = router({
             select: {
               name: true,
               slug: true,
+            },
+          },
+          comments: {
+            where: {
+              parentId: null,
+            },
+            select: {
+              id: true,
+              body: true,
+              user: {
+                select: {
+                  name: true,
+                  email: true,
+                  login: true,
+                  image: true,
+                },
+              },
+              Children: {
+                select: {
+                  parentId: true,
+                  id: true,
+                  body: true,
+                  user: {
+                    select: {
+                      name: true,
+                      email: true,
+                      login: true,
+                      image: true,
+                    },
+                  },
+                },
+              },
             },
           },
         },
@@ -97,6 +114,17 @@ export const postsRouter = router({
             },
           },
           score: true,
+        },
+      }),
+  ),
+  addComment: protectedProcedure.input(CommentSchema).mutation(
+    async ({ ctx, input }) =>
+      await ctx.prisma.comment.create({
+        data: {
+          parentId: input.parentId,
+          body: input.body,
+          userId: ctx.session.user.id,
+          postId: input.postId,
         },
       }),
   ),

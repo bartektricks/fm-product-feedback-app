@@ -1,6 +1,7 @@
 import type { LinkProps } from 'next/link';
 import Link from 'next/link';
 import type { PropsWithChildren } from 'react';
+import type { Url } from 'url';
 
 const buttonColors = {
   red: 'bg-red hover:bg-light-red',
@@ -9,21 +10,34 @@ const buttonColors = {
   'dark-grey': `bg-darkest-grey hover:bg-[#656EA3]`,
 };
 
-type ButtonProps = {
+type SharedProps = {
   color: keyof typeof buttonColors;
-} & LinkProps;
+};
 
-export default function Button({
-  children,
-  color,
-  ...rest
-}: PropsWithChildren<ButtonProps>) {
-  return (
-    <Link
-      {...rest}
-      className={`inline-flex items-center justify-center rounded-xl px-4 py-3 text-display4 text-light-grey md:px-6 ${buttonColors[color]}`}
-    >
-      {children}
-    </Link>
-  );
+type JSXButtonProps = JSX.IntrinsicElements['button'] & {
+  href?: never;
+};
+
+type ButtonComponentProps = PropsWithChildren<
+  (JSXButtonProps | LinkProps) & SharedProps
+>;
+
+function isPropsForAnchorElement(
+  props: ButtonComponentProps,
+): props is LinkProps & SharedProps {
+  return 'href' in props;
 }
+
+const Button = (props: ButtonComponentProps) => {
+  const className = `inline-flex items-center justify-center rounded-xl px-4 py-3 text-display4 text-light-grey md:px-6 ${
+    buttonColors[props.color]
+  }`;
+
+  if (isPropsForAnchorElement(props)) {
+    return <Link {...props} className={className} />;
+  }
+
+  return <button {...props} className={className} />;
+};
+
+export default Button;
