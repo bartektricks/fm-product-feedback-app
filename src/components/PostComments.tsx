@@ -23,7 +23,11 @@ export default function PostComments({
           return (
             <li
               key={comment.id}
-              className={`mb-6 border-b pb-6 last:mb-0 last:border-b-0 last:pb-0`}
+              className={`mb-6 overflow-hidden border-b border-grey border-opacity-25 pb-6 last:mb-0 last:border-b-0 last:pb-0 ${
+                hasReplies
+                  ? 'relative before:absolute before:left-0 before:top-0 before:-z-10 before:h-16 before:w-10 before:bg-white'
+                  : ''
+              }`}
             >
               <Comment
                 image={comment.user.image}
@@ -32,9 +36,16 @@ export default function PostComments({
                 body={comment.body}
               />
               {hasReplies && (
-                <ul className="mt-6 pl-6 @xl:pl-12">
-                  {comment.Children.map((reply) => (
-                    <li key={reply.id} className={`relative mb-6 last:mb-0 `}>
+                <ul className="mt-6 overflow-hidden pl-6 @xl:overflow-visible @xl:pl-12">
+                  {comment.Children.map((reply, replyIndex) => (
+                    <li key={reply.id} className={`relative mb-6 last:mb-0`}>
+                      {comment.Children.length - 1 === replyIndex && (
+                        <span
+                          className={`absolute -left-6 -z-20 h-screen w-[1px] bg-grey opacity-10 @xl:-left-7 ${
+                            replyIndex === 0 ? 'bottom-1/3' : 'bottom-16'
+                          }`}
+                        />
+                      )}
                       <Comment
                         image={reply.user.image}
                         name={reply.user.name}
